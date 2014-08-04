@@ -5,3 +5,14 @@
     - git
     - subversion
     - maven
+
+- name: Download Jenkins
+  get_url: url=http://mirrors.jenkins-ci.org/war/latest/jenkins.war dest=/opt/jenkins.war
+
+- name: Start Jenkins
+  shell: java -jar /opt/jenkins.war --httpPort={{jenkins_http_port}} >/dev/null 2>&1 &
+  async: 45
+  poll: 5
+
+- name: wait for jenkins to start
+  wait_for: port={{ jenkins_http_port }}
