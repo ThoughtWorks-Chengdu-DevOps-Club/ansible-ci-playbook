@@ -6,8 +6,27 @@
     - subversion
     - maven
 
+- name: Upload Private SSH Key
+  copy: src=id_rsa dest=/root/.ssh/id_rsa mode=600
+
+- name: Upload Private SSH Key
+  copy: src=id_rsa.pub dest=/root/.ssh/id_rsa.pub mode=644
+
+- name: Auth SSH Public Key
+  shell: cat /root/.ssh/id_rsa.pub | tee /root/.ssh/authorized_keys
+
+- name: Update Authorized_keys Right
+  file: path=/root/.ssh/authorized_keys mode=644
+
 - name: Download Jenkins
   get_url: url=http://mirrors.jenkins-ci.org/war/latest/jenkins.war dest=/opt/jenkins.war
+
+- name: Download Jenkins Plugins
+  get_url: url=http://updates.jenkins-ci.org/latest/{{item}} dest=/root/.jenkins/plugins/
+  with_items:
+    - git.hpi
+    - git-client.hpi
+    - scm-api.hpi
 
 - name: Start Jenkins
   shell: java -jar /opt/jenkins.war --httpPort={{jenkins_http_port}} >/dev/null 2>&1 &
