@@ -5,6 +5,7 @@
     - git
     - subversion
     - maven
+  when: ansible_distrubution=='Ubuntu'
 
 - name: Upload Private SSH Key
   copy: src=id_rsa dest=/root/.ssh/id_rsa mode=600
@@ -27,6 +28,9 @@
     - git.hpi
     - git-client.hpi
     - scm-api.hpi
+    - build-pipeline-plugin.hpi
+    - clone-workspace-scm.hpi
+    - deploy.hpi
 
 - name: Start Jenkins
   shell: java -jar /opt/jenkins.war --httpPort={{jenkins_http_port}} >/dev/null 2>&1 &
