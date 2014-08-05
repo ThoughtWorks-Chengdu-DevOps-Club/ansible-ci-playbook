@@ -5,8 +5,7 @@
     - git
     - subversion
     - maven
-  when: ansible_distrubution=='Ubuntu'
-
+    
 - name: Upload Private SSH Key
   copy: src=id_rsa dest=/root/.ssh/id_rsa mode=600
 
